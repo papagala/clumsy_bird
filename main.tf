@@ -2,7 +2,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~>5.0"
+      version = "6.28.0"
     }
   }
 }
@@ -95,16 +95,12 @@ data "aws_ami" "ubuntu" {
 
 resource "aws_eip" "clumsy_bird" {
   instance = aws_instance.clumsy_bird.id
-  vpc      = true
+
   tags = {
-    "Name" = "${var.prefix}-${var.project}-${var.environment}"
+    Name = "${var.prefix}-${var.project}-${var.environment}"
   }
 }
 
-resource "aws_eip_association" "clumsy_bird" {
-  instance_id   = aws_instance.clumsy_bird.id
-  allocation_id = aws_eip.clumsy_bird.id
-}
 
 resource "aws_instance" "clumsy_bird" {
   ami                         = data.aws_ami.ubuntu.id
